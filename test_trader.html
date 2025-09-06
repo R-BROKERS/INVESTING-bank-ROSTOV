@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Тест для трейдеров — в стиле myiq.com</title>
+<meta name="description" content="30 вопросов по трейдингу. Таймер, прогресс-бар, навигация.">
+<style>
+  :root{
+    --bg:#0b1020;
+    --bg2:#0e1430;
+    --card:#0f1738;
+    --text:#ecf0ff;
+    --muted:#aab3d9;
+    --accent:#4da3ff;
+    --accent2:#7cc3ff;
+    --danger:#ff5b6e;
+    --ok:#39d98a;
+    --warn:#ffd166;
+    --outline:rgba(255,255,255,0.08);
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #1b3a7a 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 0%, #1a2a57 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  }
+  a{color:var(--accent)}
+  .container{max-width:1100px;margin:0 auto;padding:20px}
+  header{
+    position:sticky;top:0;backdrop-filter:saturate(1.2) blur(10px);
+    background:rgba(10,16,40,.5);border-bottom:1px solid var(--outline);z-index:10
+  }
+  .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+  .badge{
+    font-size:12px;color:var(--muted);border:1px solid var(--outline);padding:4px 8px;border-radius:999px
+  }
+  .cta{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:#00102a;border:0;padding:12px 18px;border-radius:999px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 18px rgba(77,163,255,.35);transition:transform .15s ease;
+  }
+  .cta:active{transform:translateY(1px)}
+  .hero{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:28px 0 8px
+  }
+  .hero h1{font-size:36px;line-height:1.15;margin:0 0 10px}
+  .hero p{color:var(--muted);margin:0 0 16px}
+  .heroCard{
+    background:rgba(20,28,60,.7);border:1px solid var(--outline);border-radius:var(--radius);
+    padding:18px;box-shadow:var(--shadow)
+  }
+  .grid{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
+  .panel{
+    background:rgba(18,24,54,.7);border:1px solid var(--outline);border-radius:var(--radius);padding:14px;position:sticky;top:76px;max-height:80vh;overflow:auto
+  }
+  .panel h3{margin:4px 0 10px;font-size:14px;color:var(--muted);font-weight:600}
+  .qnav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .qbtn{
+    border:1px solid var(--outline);background:rgba(255,255,255,.02);color:var(--text);border-radius:10px;
+    padding:8px 0;font-size:13px;cursor:pointer
+  }
+  .qbtn.active{outline:2px solid var(--accent)}
+  .qbtn.answered{background:rgba(61,211,173,.12);border-color:rgba(61,211,173,.35)}
+  .content{
+    background:rgba(18,24,54,.7);border:1px solid var(--outline);border-radius:var(--radius);
+    padding:18px;box-shadow:var(--shadow)
+  }
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .timer{font-variant-numeric:tabular-nums;background:rgba(255,255,255,.06);padding:8px 12px;border-radius:10px}
+  .progressWrap{flex:1;height:12px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+  .progress{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .question h2{font-size:18px;margin:0 0 12px}
+  .answers{display:grid;gap:10px}
+  .opt{
+    border:1px solid var(--outline);border-radius:12px;padding:12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.02)
+  }
+  .opt input{margin-top:3px}
+  .navrow{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
+  .ghost{background:transparent;color:var(--text);border:1px solid var(--outline);padding:10px 14px;border-radius:10px;cursor:pointer}
+  .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#00102a;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+  .result{
+    display:none;background:rgba(20,28,60,.7);border:1px solid var(--outline);border-radius:var(--radius);
+    padding:18px;margin-top:14px
+  }
+  .pill{display:inline-block;border-radius:999px;padding:6px 10px;border:1px solid var(--outline);color:var(--muted);font-size:12px}
+  .fixedMsg{margin-top:10px;border-left:4px solid var(--danger);background:rgba(255,91,110,.1);padding:12px;border-radius:8px}
+  .banner{
+    margin-top:14px;background:rgba(255,255,255,.05);border:1px dashed var(--outline);padding:12px;border-radius:10px;color:var(--muted);font-size:14px
+  }
+  .footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 0}
+  @media (max-width:960px){
+    .hero{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .panel{position:relative;top:auto;max-height:none}
+  }
+</style>
+</head>
+<body>
+<!-- Content truncated for brevity -->
+</body>
+</html>
