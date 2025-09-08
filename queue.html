@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Очередь на выплату Жирного Брокера</title>
+  <style>
+    table {border-collapse: collapse; margin: 20px auto;}
+    td, th {border: 1px solid #ccc; padding: 4px 8px; text-align: left;}
+  </style>
+</head>
+<body>
+<h1>Очередь на выплату Жирного Брокера</h1>
+<table>
+  <thead>
+    <tr><th>№</th><th>Имя</th><th>Фамилия</th></tr>
+  </thead>
+  <tbody id="queue-body"></tbody>
+</table>
+<script>
+const specialPositions = {
+    27: { name: "Нелли", surname: "Зверева" },
+    31: { name: "Валерий", surname: "Голиков" },
+    32: { name: "Геннадий", surname: "Корягин" },
+    42: { name: "Татьяна", surname: "Сычева" },
+    47: { name: "Елена", surname: "Макаренко" },
+    48: { name: "Сергей", surname: "Петров" }
+};
+
+const names = ["Алексей","Дмитрий","Ирина","Ольга","Максим","Татьяна","Владимир","Марина","Сергей","Анна","Павел","Наталья","Юрий","Елена","Галина","Виктор","Руслан","Светлана","Егор","Василий"];
+const surnames = ["Иванов","Сидоров","Кузнецов","Попов","Смирнов","Лебедев","Новиков","Морозов","Фёдоров","Соловьёв","Борисов","Карпов","Гусев","Киселёв","Михайлов","Гаврилов","Егоров","Соколов","Крылов","Никитин"];
+
+const used = new Set();
+
+function randomItem(arr) {
+  return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function uniquePerson() {
+  let person;
+  do {
+    person = { name: randomItem(names), surname: randomItem(surnames) };
+  } while(used.has(person.name + " " + person.surname));
+  used.add(person.name + " " + person.surname);
+  return person;
+}
+
+const tbody = document.getElementById('queue-body');
+
+for (let i = 1; i <= 50; i++) {
+  const row = document.createElement('tr');
+  let person = specialPositions[i] || uniquePerson();
+  row.innerHTML = `<td class="position">${i}</td><td>${person.name}</td><td>${person.surname}</td>`;
+  tbody.appendChild(row);
+}
+</script>
+</body>
+</html>
