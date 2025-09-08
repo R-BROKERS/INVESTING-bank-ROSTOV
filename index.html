@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Очередь на пропуск средств</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e9ecef;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .status {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.1rem;
+        }
+        .queue-info {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .search-box {
+            flex: 1 1 200px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .search-box input {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 250px;
+        }
+        .queue-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .queue-table th,
+        .queue-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .queue-table th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        .queue-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .queue-table tr:hover {
+            background: #f1f8ff;
+        }
+        .highlight {
+            background: #fffde7 !important;
+            font-weight: bold;
+            color: #d35400;
+        }
+        .position {
+            font-weight: bold;
+            color: #2c3e50;
+            width: 80px;
+        }
+        .note {
+            background: #ffeaa7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border-left: 4px solid #fdcb6e;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .status-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .queue-table {
+                font-size: 0.9rem;
+            }
+            .queue-table th,
+            .queue-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Очередь на пропуск средств</h1>
+            <p class="subtitle">Система обработки запросов от брокерских компаний</p>
+        </header>
+        <div class="status-bar">
+            <div class="status">Статус: <span id="current-status">Обработка приостановлена</span></div>
+            <div class="queue-info" id="queue-info">Общее количество заявок: 0</div>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="Поиск по имени или фамилии..." />
+            </div>
+        </div>
+        <table class="queue-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody id="queue-body"></tbody>
+        </table>
+        <div class="note">
+            <p>Внимание: обработка заявок приостановлена в связи с проведением проверки соответствия международным требованиям.
+            Ожидаемое время возобновления обработки - по мере поступления дополнительных инструкций.</p>
+            <p id="last-updated">Последнее обновление: --:--:--</p>
+        </div>
+        <footer>
+            <p>© 2023 Система обработки запросов. Все права защищены.</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const queueBody = document.getElementById('queue-body');
+            const queueInfo = document.getElementById('queue-info');
+            const searchInput = document.getElementById('search');
+            const lastUpdated = document.getElementById('last-updated');
+            const totalPositions = 50;
+            const names = ["Александр","Дмитрий","Максим","Сергей","Андрей","Алексей","Артем","Илья","Кирилл","Михаил",
+                "Никита","Матвей","Роман","Егор","Артур","Иван","Денис","Евгений","Тимофей","Владимир",
+                "Олег","Павел","Руслан","Марк","Глеб","Степан","Ярослав","Федор","Николай","Вадим"];
+            const surnames = ["Иванов","Смирнов","Кузнецов","Попов","Васильев","Петров","Соколов","Михайлов","Новиков","Федоров",
+                "Морозов","Волков","Алексеев","Лебедев","Семенов","Егоров","Павлов","Козлов","Степанов","Николаев",
+                "Орлов","Андреев","Макаров","Никитин","Захаров","Зайцев","Соловьев","Борисов","Яковлев","Григорьев"];
+            const specialPositions = {
+                27: { name: "Нелли", surname: "Зверева" },
+                31: { name: "Валерий", surname: "Голиков" },
+                32: { name: "Геннадий", surname: "Корягин" },
+                42: { name: "Татьяна", surname: "Сычева" },
+                47: { name: "Елена", surname: "Макаренко" },
+                48: { name: "Сергей", surname: "Петров" }
+            };
+            for (let i = 1; i <= totalPositions; i++) {
+                const row = document.createElement('tr');
+                if (specialPositions[i]) {
+                    row.innerHTML = `<td class="position">${i}</td><td>${specialPositions[i].name}</td><td>${specialPositions[i].surname}</td><td>В ожидании</td>`;
+                    row.classList.add('highlight');
+                } else {
+                    const randomName = names[Math.floor(Math.random() * names.length)];
+                    const randomSurname = surnames[Math.floor(Math.random() * surnames.length)];
+                    row.innerHTML = `<td class="position">${i}</td><td>${randomName}</td><td>${randomSurname}</td><td>В ожидании</td>`;
+                }
+                queueBody.appendChild(row);
+            }
+            queueInfo.textContent = `Общее количество заявок: ${queueBody.children.length}`;
+            function updateStatus() {
+                const statusElement = document.getElementById('current-status');
+                const statuses = ["Обработка приостановлена","Проверка документов","Ожидание разрешения","На рассмотрении"];
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                statusElement.textContent = randomStatus;
+                const now = new Date();
+                lastUpdated.textContent = `Последнее обновление: ${now.toLocaleTimeString('ru-RU')}`;
+            }
+            setInterval(updateStatus, 5000);
+            updateStatus();
+            searchInput.addEventListener('input', () => {
+                const value = searchInput.value.toLowerCase();
+                Array.from(queueBody.children).forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(value) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
