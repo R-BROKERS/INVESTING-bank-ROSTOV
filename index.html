@@ -3,44 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЖИРНЫЙ БРОКЕР - Опрос по санкционным ограничениям</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>ШлюзВыводPro - Для Нелли Зверевой | Анти-Санкционный Вывод</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        body { font-family: 'Orbitron', monospace; background: linear-gradient(135deg, #0c0c0c, #1a1a2e, #16213e); color: #fff; margin: 0; padding: 0; overflow-x: hidden; }
+        header { background: rgba(0,0,0,0.8); padding: 20px; text-align: center; border-bottom: 2px solid #00ff88; }
+        .hero { background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2300ff88" stop-opacity="0.3"/><stop offset="100%" stop-color="%23000"/></radialGradient></defs><rect width="100" height="100" fill="url(%23g)"/></svg>') no-repeat center/cover; padding: 50px 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .sum-display { font-size: 48px; color: #00ff88; text-shadow: 0 0 10px #00ff88; margin: 20px 0; }
+        .gateway { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 30px 0; }
+        .gateway-item { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 10px; width: 200px; text-align: center; border: 1px solid #00ff88; transition: transform 0.3s; }
+        .gateway-item:hover { transform: scale(1.05); box-shadow: 0 0 20px #00ff88; }
+        .console { background: #000; padding: 20px; border-radius: 10px; margin: 20px 0; font-family: monospace; height: 200px; overflow-y: auto; color: #00ff41; border: 1px solid #00ff88; }
+        .console::before { content: "> Мониторинг шлюза: Активен | Статус: Готов к выводу"; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        .packages { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 40px 0; }
+        .package { background: linear-gradient(45deg, #ff6b6b, #4ecdc4); padding: 20px; border-radius: 15px; margin: 10px; width: 250px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .package:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,255,136,0.5); }
+        .package.selected { border: 3px solid #00ff88; }
+        .chance-bar { background: #333; height: 20px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .chance-fill { height: 100%; background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00); transition: width 0.5s; }
+        .btn { background: linear-gradient(45deg, #00ff88, #00bfff); color: #000; padding: 15px 30px; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; margin: 20px; transition: all 0.3s; font-weight: bold; }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 30px #00ff88; }
+        .cancel-btn { background: #ff4757; color: white; }
+        .graph { width: 100%; height: 200px; background: #000; border: 1px solid #00ff88; margin: 20px 0; position: relative; overflow: hidden; }
+        .graph::before { content: "📈 График успеха: +342% рост под санкциями"; position: absolute; top: 10px; left: 10px; color: #00ff88; font-size: 14px; }
+        .cabrio { position: absolute; bottom: 0; right: 0; font-size: 50px; animation: drive 3s infinite; } /* Кабриолет-график лол */
+        @keyframes drive { 0% { transform: translateX(0); } 100% { transform: translateX(-100px); } }
+        footer { text-align: center; padding: 20px; background: rgba(0,0,0,0.5); margin-top: 40px; }
+        @media (max-width: 768px) { .packages, .gateway { flex-direction: column; align-items: center; } }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>🚀 ШлюзВыводPro - Персональный Кабинет Нелли Зверевой</h1>
+        <p>Эксклюзивный доступ: Обход санкций для вывода из казино, крипты и счетов РФ</p>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h2>Добро пожаловать, Нелли! Твоя сумма на вывод: <span class="sum-display">3 423 075 ₽</span></h2>
+            <p>Мы активировали шлюзы для безопасного перевода. Выбери пакет для максимизации шансов!</p>
+        </div>
+    </section>
+    
     <div class="container">
-        <header class="header">
-            <div class="logo">
-                <h1>ЖИРНЫЙ БРОКЕР</h1>
-                <p class="tagline">Топ 5 компаний СНГ по возврату средств с биржи</p>
-                <p class="location">📍 Ростов-на-Дону</p>
+        <div class="gateway">
+            <div class="gateway-item">🌐 Шлюз ЕС-Банк</div>
+            <div class="gateway-item">🔒 Анти-Санкция РФ</div>
+            <div class="gateway-item">💳 Крипто-Обмен</div>
+            <div class="gateway-item">⚡ Быстрый Трек</div>
+        </div>
+        
+        <div class="console">
+            Лог транзакций: [2025-09-30 14:23] Инициализация... [SUCCESS] Шлюз активен. Ожидаем платёж для разблокировки.
+        </div>
+        
+        <div class="graph">
+            <div class="cabrio">🏎️</div> <!-- Кабриолет в графике для фана -->
+        </div>
+        
+        <h3>Базовый платёж: 10 300 ₽ | Шанс успеха: 32%</h3>
+        <div class="chance-bar"><div class="chance-fill" style="width: 32%;"></div></div>
+        
+        <h3>Улучши шансы! Выбери пакет обслуживания шлюза анти-санкций для жителей РФ:</h3>
+        <div class="packages">
+            <div class="package" onclick="selectPackage(1)">
+                <h4>Базовый Boost</h4>
+                <p>15 000 ₽</p>
+                <div class="chance-bar"><div class="chance-fill" style="width: 0%;"></div></div>
+                <p id="chance1">61% успеха</p>
             </div>
-        </header>
-
-        <main class="main-content">
-            <div class="survey-container">
-                <div class="survey-header">
-                    <h2>Опрос по санкционным ограничениям для граждан РФ</h2>
-                    <p class="survey-description">
-                        Помогите нам лучше понять влияние санкционных ограничений на вашу финансовую деятельность. 
-                        Ваши ответы помогут нам улучшить качество наших услуг.
-                    </p>
-                </div>
-
-                <form id="surveyForm" class="survey-form">
-                    <!-- Форма будет добавлена через JavaScript -->
-                </form>
+            <div class="package" onclick="selectPackage(2)">
+                <h4>Премиум Флоу</h4>
+                <p>23 500 ₽</p>
+                <div class="chance-bar"><div class="chance-fill" style="width: 0%;"></div></div>
+                <p id="chance2">73% успеха</p>
             </div>
-        </main>
-
-        <footer class="footer">
-            <div class="footer-content">
-                <p>&copy; 2024 ЖИРНЫЙ БРОКЕР. Все права защищены.</p>
-                <p>Ростов-на-Дону | Топ 5 компаний СНГ по возврату средств с биржи</p>
+            <div class="package" onclick="selectPackage(3)">
+                <h4>Элитный Шлюз</h4>
+                <p>45 000 ₽</p>
+                <div class="chance-bar"><div class="chance-fill" style="width: 0%;"></div></div>
+                <p id="chance3">93% успеха</p>
             </div>
-        </footer>
+        </div>
+        
+        <button class="btn" onclick="order()">Оформить Заказ & Оплатить</button>
+        <button class="btn cancel-btn" onclick="cancel()">Отменить Операцию</button>
+        
+        <p>Для оформления заказа или если возникнут вопросы — пиши в Telegram: <a href="https://t.me/rostov_broker_ru" style="color: #00ff88;">@rostov_broker_ru</a></p>
     </div>
+    
+    <footer>
+        <p>© 2025 ШлюзВыводPro. Все права защищены. Анонимность гарантирована. 😎</p>
+    </footer>
 
-    <script src="script.js"></script>
+    <script>
+        let selected = 0;
+        function selectPackage(num) {
+            document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
+            event.target.closest('.package').classList.add('selected');
+            selected = num;
+            const fills = document.querySelectorAll('.chance-fill');
+            const chances = [0, 61, 73, 93];
+            fills.forEach((fill, i) => {
+                if (i+1 === num) fill.style.width = chances[num] + '%';
+            });
+            document.getElementById('chance' + num).innerText = chances[num] + '% успеха';
+            // Фейковый апдейт консоли
+            const consoleEl = document.querySelector('.console');
+            consoleEl.innerHTML += '<br>> [UPDATE] Пакет ' + num + ' выбран. Шанс: ' + chances[num] + '%';
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+        
+        function order() {
+            if (selected === 0) {
+                alert('Выбери пакет, бро! 😏');
+                return;
+            }
+            const costs = [0, 15000, 23500, 45000];
+            alert(`Оплата: ${costs[selected]} ₽ + базовые 10 300 ₽. Шанс: ${[0,61,73,93][selected]}%. Переходим в TG @rostov_broker_ru для финала! Ха-ха, бабки твои!`);
+            window.open('https://t.me/rostov_broker_ru', '_blank');
+        }
+        
+        function cancel() {
+            alert('Операция отменена. Но зря — Нелли, твои 3+ млн ждут! Попробуй снова. 😉');
+            location.reload();
+        }
+        
+        // Анимация графика
+        setInterval(() => {
+            const graph = document.querySelector('.graph');
+            graph.style.background = `linear-gradient(90deg, #000 ${Math.random()*100}%, #00ff88 ${Math.random()*100}%)`;
+        }, 2000);
+    </script>
 </body>
 </html>
